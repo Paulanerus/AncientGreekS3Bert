@@ -15,3 +15,5 @@ def check_cuda_and_gpus():
             print(f"GPU {i}: {gpu_name}, Memory: {gpu_memory:.2f} MiB\n")
     else:
         print("No CUDA-enabled GPU found.\n")
+
+    return "cuda" if cuda_available else "cpu"
