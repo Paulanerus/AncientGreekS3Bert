@@ -18,7 +18,11 @@ uv pip install \
   transformers==4.57.1 \
   sentence-transformers==5.1.2 \
   numpy==2.3.5 \
+  pandas==2.3.3 \
   scipy==1.16.3 \
+  datasets==4.4.1 \
+  datasets==4.4.1 \
+  accelerate==1.12.0 \
   --torch-backend=cu126
 ```
 
