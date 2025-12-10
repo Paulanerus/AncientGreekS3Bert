@@ -184,7 +184,7 @@ def main():
     )
 
     print("\nSaving splits...")
-    save_splits(train_df, dev_df, eval_df, output_dir)
+    save_splits(train_df, dev_df, eval_df, config.PREPRO_PATH)
 
     print("\nFinished!")
 
