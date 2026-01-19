@@ -8,7 +8,7 @@ EVAL_STEPS = 1000
 
 LEARNING_RATE = 2e-5
 
-SBERT_INIT = "Paulanerus/AncientGreekVariantSBERT"
+SBERT_INIT = "Paulanerus/AncientGreekVariantSBERT"  # pranaydeeps/Ancient-Greek-BERT
 
 SBERT_SAVE_PATH = "model/"
 
