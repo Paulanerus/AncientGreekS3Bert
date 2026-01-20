@@ -42,4 +42,4 @@ preds = ph.get_preds(
 
 for i, x in enumerate(xsent):
     sims = preds[i]
-    print(f"Global: {sims[0]}, Gender: {sims[1]}\n")
+    print(f"Global: {sims[0]:.4f}, Gender: {sims[1]:.4f}\n")
