@@ -192,9 +192,9 @@ def build_pairs(
 
     data = []
     data.extend([(a, b, 1.0) for a, b in same_pairs])
-    data.extend([(a, b, 0.75) for a, b in mixed_pairs])
-    data.extend([(a, b, 0.25) for a, b in mixed_undef_pairs])
-    data.extend([(a, b, 0.0) for a, b in undef_pairs])
+    data.extend([(a, b, 0.0) for a, b in mixed_pairs])
+    data.extend([(a, b, 0.33) for a, b in mixed_undef_pairs])
+    data.extend([(a, b, 0.66) for a, b in undef_pairs])
 
     pairs_df = pd.DataFrame(data, columns=["sentence1", "sentence2", "gender_score"])
     shuffle_seed = int(rng.integers(0, 2**31))
