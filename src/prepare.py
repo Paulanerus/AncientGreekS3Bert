@@ -130,10 +130,10 @@ def sample_label_pairs(pools: list, target: int, rng: np.random.Generator) -> li
 
 
 def label_targets(split_total: int) -> dict:
-    base = split_total // 3
-    remainder = split_total - base * 3
-    targets = {"same": base, "mixed": base, "undef": base}
-    order = ["same", "mixed", "undef"]
+    base = split_total // 4
+    remainder = split_total - base * 4
+    targets = {"same": base, "mixed": base, "undef": base, "mixed_undef": base}
+    order = ["same", "mixed", "undef", "mixed_undef"]
     for idx in range(remainder):
         targets[order[idx]] += 1
     return targets
@@ -159,6 +159,8 @@ def build_pairs(
     ]
     mixed_pools = [
         (texts_m, texts_f, False),
+    ]
+    mixed_undef_pools = [
         (texts_m, texts_u, False),
         (texts_f, texts_u, False),
     ]
@@ -167,25 +169,31 @@ def build_pairs(
     same_sizes = [pool_size(texts_m, texts_m, True), pool_size(texts_f, texts_f, True)]
     mixed_sizes = [
         pool_size(texts_m, texts_f, False),
+    ]
+    mixed_undef_sizes = [
         pool_size(texts_m, texts_u, False),
         pool_size(texts_f, texts_u, False),
     ]
     undef_sizes = [pool_size(texts_u, texts_u, True)]
 
     print(
-        f"{name} pools: same={sum(same_sizes)} mixed={sum(mixed_sizes)} undef={sum(undef_sizes)}"
+        f"{name} pools: same={sum(same_sizes)} mixed={sum(mixed_sizes)} mixed_undef={sum(mixed_undef_sizes)} undef={sum(undef_sizes)}"
     )
     print(
-        f"{name} targets: same={targets['same']} mixed={targets['mixed']} undef={targets['undef']}"
+        f"{name} targets: same={targets['same']} mixed={targets['mixed']} mixed_undef={targets['mixed_undef']} undef={targets['undef']}"
     )
 
     same_pairs = sample_label_pairs(same_pools, targets["same"], rng)
     mixed_pairs = sample_label_pairs(mixed_pools, targets["mixed"], rng)
+    mixed_undef_pairs = sample_label_pairs(
+        mixed_undef_pools, targets["mixed_undef"], rng
+    )
     undef_pairs = sample_label_pairs(undef_pools, targets["undef"], rng)
 
     data = []
     data.extend([(a, b, 1.0) for a, b in same_pairs])
-    data.extend([(a, b, 0.5) for a, b in mixed_pairs])
+    data.extend([(a, b, 0.75) for a, b in mixed_pairs])
+    data.extend([(a, b, 0.25) for a, b in mixed_undef_pairs])
     data.extend([(a, b, 0.0) for a, b in undef_pairs])
 
     pairs_df = pd.DataFrame(data, columns=["sentence1", "sentence2", "gender_score"])
