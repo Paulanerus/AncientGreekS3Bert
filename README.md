@@ -1,4 +1,4 @@
-# S3Bert for [AncientGreekBERT](https://huggingface.co/pranaydeeps/Ancient-Greek-BERT)
+# S3Bert for [AncientGreekVariantSBERT](https://huggingface.co/Paulanerus/AncientGreekVariantSBERT)
 
 ## Setup
 
