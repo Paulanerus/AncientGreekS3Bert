@@ -29,3 +29,13 @@ You can then use the `run.sh` script as a simple entry point:
 - `./run.sh prepare` – run the data preparation pipeline
 - `./run.sh train` – train the model (requires `./run.sh prepare`)
 - `./run.sh infer` – run inference using a trained model
+
+---
+
+## Acknowledgments
+
+This work builds on:
+
+- the SentenceTransformers ecosystem: https://www.sbert.net
+
+This work was funded by the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) 513300936.
