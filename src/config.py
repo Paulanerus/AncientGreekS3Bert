@@ -14,6 +14,11 @@ SBERT_SAVE_PATH = "model/"
 
 DATA_PATH = "data"
 
+RAW_VERSES = f"{DATA_PATH}/verses.csv"
+RAW_WORDS = f"{DATA_PATH}/words.csv"
+RAW_OCCURRENCES = f"{DATA_PATH}/occurrences.csv"
+TEMP_VERSES = f"{DATA_PATH}/temp_verses.csv"
+
 PREPRO_PATH = f"{DATA_PATH}/pairs/"
 
 FEATURES = ["input1", "input2"]

@@ -21,6 +21,42 @@ def normalize_df(df: pd.DataFrame) -> pd.DataFrame:
     return df[["text", "sentence_gender"]].reset_index(drop=True)
 
 
+def build_temp_verses() -> pd.DataFrame:
+    verses = pd.read_csv(config.RAW_VERSES, usecols=["verse_id", "text"])
+    occurrences = pd.read_csv(
+        config.RAW_OCCURRENCES, usecols=["verse_id", "variantID", "wordID"]
+    )
+    words = pd.read_csv(config.RAW_WORDS, usecols=["gender", "wordID", "variantID"])
+
+    occ_word = occurrences[occurrences["variantID"] == -1].merge(
+        words[["gender", "wordID"]], on="wordID", how="left"
+    )
+    occ_var = occurrences[occurrences["variantID"] != -1].merge(
+        words[["gender", "variantID"]], on="variantID", how="left"
+    )
+    genders = pd.concat(
+        [occ_word[["verse_id", "gender"]], occ_var[["verse_id", "gender"]]],
+        ignore_index=True,
+    )
+    stats = (
+        genders.groupby("verse_id")["gender"]
+        .agg(gender_count="count", min_gender="min", max_gender="max")
+        .reset_index()
+    )
+
+    df = verses.merge(stats, on="verse_id", how="left")
+    df["gender_count"] = df["gender_count"].fillna(0)
+    df["sentence_gender"] = np.where(
+        df["gender_count"] == 0,
+        "u",
+        np.where(df["min_gender"] == df["max_gender"], df["min_gender"], "n"),
+    )
+    df = df.sort_values("verse_id").reset_index(drop=True)
+    Path(config.TEMP_VERSES).parent.mkdir(parents=True, exist_ok=True)
+    df[["verse_id", "text", "sentence_gender"]].to_csv(config.TEMP_VERSES, index=False)
+    return df[["verse_id", "text", "sentence_gender"]]
+
+
 def split_df(df: pd.DataFrame, rng: np.random.Generator) -> dict:
     indices = rng.permutation(len(df))
     train_end = int(len(df) * 0.9)
@@ -213,11 +249,10 @@ def print_split_report(name: str, df: pd.DataFrame):
 
 def main():
     rng = np.random.default_rng(SEED)
-    data_path = Path(config.DATA_PATH) / "verses.csv"
     pairs_dir = Path(config.PREPRO_PATH)
     pairs_dir.mkdir(parents=True, exist_ok=True)
 
-    df = pd.read_csv(data_path)
+    df = build_temp_verses()
     df = normalize_df(df)
 
     print(f"Total normalized unique verses: {len(df)}")
