@@ -1,4 +1,4 @@
-# Ancient Greek S3BERT (Gender)
+# Ancient Greek Variant S3BERT (Gender)
 
 An S3BERT-style embedding model for **Ancient Greek biblical verse similarity**, with an explicit **"Gender" feature sub-vector**.
 
