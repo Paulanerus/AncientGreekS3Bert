@@ -5,6 +5,7 @@ bench/
 data/*.csv
 data/pairs/*.csv
 *.tar.xz
+.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
